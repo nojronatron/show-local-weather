@@ -32,11 +32,9 @@ Use the endpoint `https://weather-proxy.freecodecamp.rocks/` to get the weather 
 
 To prevent abuses this server accepts `GET` requests only, and serves only the route `/api/current?lon=:longitude&lat=:latitude`. Images links are included in the JSON under `weather[0].icon`. This is enough to complete the challenge.
 
-Example:
+Example request: `https://weather-proxy.freecodecamp.rocks/api/current?lat=35&lon=139`
 
-Request: `https://weather-proxy.freecodecamp.rocks/api/current?lat=35&lon=139`
-
-Response:
+Example response:
 
 ```javascript
 {

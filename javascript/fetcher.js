@@ -7,15 +7,20 @@ async function sendData(lat, lon) {
     lat +
     '&lon=' +
     lon;
-  try {
-    const response = await fetch(baseUrl, {
-      method: 'GET',
+
+  fetch(baseUrl, { method: 'GET' })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((json) => {
+      displayResults(json);
+    })
+    .catch((err) => {
+      console.error(`Fetch problem: ${err.message}`);
     });
-    const responseJson = await response.json;
-    console.log(responseJson);
-  } catch (e) {
-    console.error(e);
-  }
 }
 
 // Take over form submission
@@ -26,22 +31,32 @@ form.addEventListener('submit', (event) => {
   sendData(lattitude, longitude);
 });
 
-// *** update the table with results from fetch *** //
-function tableResults(jsonResponse) {
-  // jsonRepsonse is the response from weather api in json format
-  let tableEl = document.getElementById('forecastTable');
-  let headerEl = document.createElement('thead');
-  tableEl.appendChild(headerEl);
-  let row1 = document.createElement('trow');
-  headerEl.appendChild(row1);
+// *** update the page with results from fetch *** //
+function displayResults(wxDataResponse) {
+  console.log('displayResults() wxDataResponse: ', wxDataResponse);
+  console.log(
+    'displayResults() wxDataResponse.weather: ',
+    wxDataResponse.weather
+  );
 
-  //  TH data headlines the forecast with forecast image and the City Name
+  // set up a header for the weather data
+  let forecastSection = document.getElementById('forecastData');
+  let wxHeadDiv = document.createElement('div');
+  forecastSection.appendChild(wxHeadDiv);
+
+  //  forecast image
+  // e.g. https://cdn.freecodecamp.org/weather-icons/02n.png
+
+  let iconUrl = wxDataResponse.weather[0].icon;
+  console.log('wxDataResponse.weather[0].icon is ', iconUrl);
   let wxImage = document.createElement('img');
-  wxImage.src = jsonResponse.weather[0].icon;
+  wxImage.src = iconUrl;
   wxImage.width = '100';
   wxImage.alt = "Dynamically loaded image of today's weather.";
+  wxHeadDiv.appendChild(wxImage);
 
+  // city name
   let cityName = document.createElement('cityName');
-  cityName.textContent = $`Weather Forecast for {jsonResponse.name}`;
-  row1.appendChild(th1El);
+  cityName.textContent = `Weather Forecast for ${wxDataResponse.name}`;
+  wxHeadDiv.appendChild(cityName);
 }

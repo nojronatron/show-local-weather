@@ -4,7 +4,7 @@ form.addEventListener('submit', submitEventHandler, false);
 // originating code from MDN with edits
 function positionSuccess(position) {
   // since geolocation is available the event listener is no longer necessary
-  form.removeEventListener('submit', submitEventHandler, false);
+  // form.removeEventListener('submit', submitEventHandler, false);
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
   // Do something with your latitude and longitude
@@ -65,18 +65,20 @@ function displayResults(wxDataResponse) {
   );
 
   // set up a header for the weather data
-  // let forecastSection = document.getElementById('forecastData');
   let cityWx = document.getElementById('cityWx');
   let wxImg = document.getElementById('wxImg');
   let mainDesc = document.getElementById('mainDesc');
   let tempPressHum = document.getElementById('tempPressHum');
   let cloudVis = document.getElementById('cloudVis');
   let WindSpdDegGust = document.getElementById('WindSpdDegGust');
-  let sunRiseSet = document.getElementById('sunRiseSet');
+  // let sunRiseSet = document.getElementById('sunRiseSet');
 
   // city name
   let cityNameEl = document.createElement('h2');
   cityNameEl.textContent = `${wxDataResponse.name} Weather`;
+  if (cityWx.hasChildNodes()) {
+    cityWx.removeChild(cityWx.firstChild);
+  }
   cityWx.appendChild(cityNameEl);
 
   //  forecast image
@@ -86,6 +88,9 @@ function displayResults(wxDataResponse) {
   wxIcon.src = iconUrl;
   wxIcon.width = '60';
   wxIcon.alt = "Dynamically loaded image of today's weather.";
+  if (wxImg.hasChildNodes()) {
+    wxImg.removeChild(wxImg.firstChild);
+  }
   wxImg.appendChild(wxIcon);
 
   // weather[0].main, weather[0].description mainDesc
@@ -103,6 +108,7 @@ function displayResults(wxDataResponse) {
   tempEl.setAttribute('type', 'button');
   tempEl.setAttribute('value', temperatureC);
 
+  tempEl.removeEventListener('click', updateButton);
   tempEl.addEventListener('click', updateButton);
 
   function updateButton() {
@@ -119,6 +125,11 @@ function displayResults(wxDataResponse) {
   let humidity = `Humidity: ${wxDataResponse.main.humidity} %`;
   let humEl = document.createElement('p');
   humEl.textContent = humidity;
+
+  while (tempPressHum.hasChildNodes()) {
+    tempPressHum.removeChild(tempPressHum.firstChild);
+  }
+
   tempPressHum.appendChild(tempEl);
   tempPressHum.appendChild(pressEl);
   tempPressHum.appendChild(humEl);
@@ -132,6 +143,11 @@ function displayResults(wxDataResponse) {
   } mi`;
   let visibilityEl = document.createElement('p');
   visibilityEl.textContent = visibility;
+
+  while (cloudVis.hasChildNodes()) {
+    cloudVis.removeChild(cloudVis.firstChild);
+  }
+
   cloudVis.appendChild(cloudEl);
   cloudVis.appendChild(visibilityEl);
 
@@ -139,15 +155,18 @@ function displayResults(wxDataResponse) {
   let winds = `Winds from ${wxDataResponse.wind.deg} at ${wxDataResponse.wind.speed} mph, gusts ${wxDataResponse.wind.gust} mph.`;
   let windsEl = document.createElement('p');
   windsEl.textContent = winds;
+  if (WindSpdDegGust.hasChildNodes()) {
+    WindSpdDegGust.removeChild(WindSpdDegGust.firstChild);
+  }
   WindSpdDegGust.appendChild(windsEl);
 
-  // sys.sunrise, sys.sunset "sunRiseSet"
-  let sunrise = `Sunrise: ${wxDataResponse.sys.sunrise}`;
-  let sunriseEl = document.createElement('p');
-  sunriseEl.textContent = sunrise;
-  let sunset = `Sunset: ${wxDataResponse.sys.sunset}`;
-  let sunsetEl = document.createElement('p');
-  sunsetEl.textContent = sunset;
-  sunRiseSet.appendChild(sunriseEl);
-  sunRiseSet.appendChild(sunsetEl);
+  // sys.sunrise, sys.sunset "sunRiseSet" => not epoch-like so skipping
+  // let sunrise = `Sunrise: ${wxDataResponse.sys.sunrise}`;
+  // let sunriseEl = document.createElement('p');
+  // sunriseEl.textContent = sunrise;
+  // let sunset = `Sunset: ${wxDataResponse.sys.sunset}`;
+  // let sunsetEl = document.createElement('p');
+  // sunsetEl.textContent = sunset;
+  // sunRiseSet.appendChild(sunriseEl);
+  // sunRiseSet.appendChild(sunsetEl);
 }

@@ -1,14 +1,26 @@
 body {
   background: lightcyan;
+  min-width: 450px;
+}
+header,
+footer {
+  padding: 2pt;
+  text-align: center;
 }
 section {
-  padding: 4px;
-}
-div {
-  padding: 4px;
-}
-.bordered {
-  padding: 4px;
+  margin: 1pt;
+  padding: 4pt;
   border-radius: 12px;
   border: 2px solid darkgray;
+}
+div {
+  padding: 4pt;
+}
+.formStyle {
+  text-align: center;
+  display: flex;
+  align-content: space-around;
+}
+#forecastData {
+  text-align: center;
 }

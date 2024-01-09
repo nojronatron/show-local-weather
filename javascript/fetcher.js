@@ -1,4 +1,37 @@
 const form = document.querySelector('#userlocation');
+form.addEventListener('submit', submitEventHandler, false);
+
+// originating code from MDN with edits
+function positionSuccess(position) {
+  // since geolocation is available the event listener is no longer necessary
+  form.removeEventListener('submit', submitEventHandler, false);
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+  // Do something with your latitude and longitude
+  sendData(latitude, longitude);
+}
+
+function positionError() {
+  console.log('Position not available, user will have to submit the form.');
+}
+
+// acquire geolocation (if available)
+// originating code from MDN with edits
+if ('geolocation' in navigator) {
+  /* geolocation is available */
+  navigator.geolocation.getCurrentPosition(positionSuccess, positionError);
+} else {
+  /* geolocation IS NOT available */
+  console.log('GeoLocation not available, user will have to submit the form.');
+}
+
+function submitEventHandler(event) {
+  // Take over form submission
+  event.preventDefault();
+  const latitude = event.target.lat.value;
+  const longitude = event.target.lon.value;
+  sendData(latitude, longitude);
+}
 
 async function sendData(lat, lon) {
   console.log('lat: ', lat, ', lon: ', lon);
@@ -22,14 +55,6 @@ async function sendData(lat, lon) {
       console.error(`Fetch problem: ${err.message}`);
     });
 }
-
-// Take over form submission
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const lattitude = event.target.lat.value;
-  const longitude = event.target.lon.value;
-  sendData(lattitude, longitude);
-});
 
 // *** update the page with results from fetch *** //
 function displayResults(wxDataResponse) {

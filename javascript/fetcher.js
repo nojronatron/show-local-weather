@@ -66,35 +66,53 @@ function displayResults(wxDataResponse) {
 
   // set up a header for the weather data
   // let forecastSection = document.getElementById('forecastData');
-  let imgCity = document.getElementById('imgCity');
+  let cityWx = document.getElementById('cityWx');
+  let wxImg = document.getElementById('wxImg');
   let mainDesc = document.getElementById('mainDesc');
   let tempPressHum = document.getElementById('tempPressHum');
   let cloudVis = document.getElementById('cloudVis');
   let WindSpdDegGust = document.getElementById('WindSpdDegGust');
   let sunRiseSet = document.getElementById('sunRiseSet');
 
+  // city name
+  let cityNameEl = document.createElement('h2');
+  cityNameEl.textContent = `${wxDataResponse.name} Weather`;
+  cityWx.appendChild(cityNameEl);
+
   //  forecast image
   // e.g. https://cdn.freecodecamp.org/weather-icons/02n.png
   let iconUrl = wxDataResponse.weather[0].icon;
-  let wxImage = document.createElement('img');
-  wxImage.src = iconUrl;
-  wxImage.width = '60';
-  wxImage.alt = "Dynamically loaded image of today's weather.";
-  imgCity.appendChild(wxImage);
-
-  // city name
-  let cityName = document.createElement('cityName');
-  cityName.textContent = `${wxDataResponse.name} Weather`;
-  imgCity.appendChild(cityName);
+  let wxIcon = document.createElement('img');
+  wxIcon.src = iconUrl;
+  wxIcon.width = '60';
+  wxIcon.alt = "Dynamically loaded image of today's weather.";
+  wxImg.appendChild(wxIcon);
 
   // weather[0].main, weather[0].description mainDesc
   let mainDescText = `Current Conditions: ${wxDataResponse.weather[0].description}.`;
   mainDesc.textContent = mainDescText;
 
   // main.temp, main.pressure, main.humidity "tempPressHum"
-  let temperature = `Temp: ${wxDataResponse.main.temp} C`;
-  let tempEl = document.createElement('p');
-  tempEl.textContent = temperature;
+  let tempC = wxDataResponse.main.temp;
+  let tempNumC = new Number(tempC).valueOf();
+  let tempF = 2 * tempNumC + 32;
+  let temperatureC = `Temperature: ${tempC} C`;
+  let temperatureF = `Temperature: ${tempF} F`;
+
+  let tempEl = document.createElement('input');
+  tempEl.setAttribute('type', 'button');
+  tempEl.setAttribute('value', temperatureC);
+
+  tempEl.addEventListener('click', updateButton);
+
+  function updateButton() {
+    if (tempEl.value === temperatureC) {
+      tempEl.value = temperatureF;
+    } else {
+      tempEl.value = temperatureC;
+    }
+  }
+
   let pressure = `Pressure: ${wxDataResponse.main.pressure} hG`;
   let pressEl = document.createElement('p');
   pressEl.textContent = pressure;

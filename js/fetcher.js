@@ -54,14 +54,13 @@ async function sendData(lat, lon) {
 
 // *** update the page with results from fetch *** //
 function displayResults(wxDataResponse) {
-  // set up a header for the weather data
+  // set up weather data elements
   let cityWx = document.getElementById('cityWx');
   let wxImg = document.getElementById('wxImg');
   let mainDesc = document.getElementById('mainDesc');
   let tempPressHum = document.getElementById('tempPressHum');
   let cloudVis = document.getElementById('cloudVis');
   let WindSpdDegGust = document.getElementById('WindSpdDegGust');
-  // let sunRiseSet = document.getElementById('sunRiseSet');
 
   // city name
   let cityNameEl = document.createElement('h2');

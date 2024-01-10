@@ -1,3 +1,5 @@
+'use strict';
+
 const form = document.querySelector('#userlocation');
 form.addEventListener('submit', submitEventHandler, false);
 
@@ -18,15 +20,15 @@ function positionError() {
 // acquire geolocation (if available)
 // originating code from MDN with edits
 if ('geolocation' in navigator) {
-  /* geolocation is available */
+  console.log('geolocation is available');
   navigator.geolocation.getCurrentPosition(positionSuccess, positionError);
 } else {
-  /* geolocation IS NOT available */
+  console.log('geolocation IS NOT available');
   console.log('GeoLocation not available, user will have to submit the form.');
 }
 
 function submitEventHandler(event) {
-  // Take over form submission
+  console.log('Take over form submission');
   event.preventDefault();
   const latitude = event.target.lat.value;
   const longitude = event.target.lon.value;
@@ -34,7 +36,7 @@ function submitEventHandler(event) {
 }
 
 async function sendData(lat, lon) {
-  console.log('lat: ', lat, ', lon: ', lon);
+  console.log('about to sendData lat: ', lat, ', lon: ', lon);
   let baseUrl =
     'https://weather-proxy.freecodecamp.rocks/api/current?lat=' +
     lat +
@@ -59,10 +61,6 @@ async function sendData(lat, lon) {
 // *** update the page with results from fetch *** //
 function displayResults(wxDataResponse) {
   console.log('displayResults() wxDataResponse: ', wxDataResponse);
-  console.log(
-    'displayResults() wxDataResponse.weather: ',
-    wxDataResponse.weather
-  );
 
   // set up a header for the weather data
   let cityWx = document.getElementById('cityWx');

@@ -19,7 +19,7 @@ div {
 .formStyle {
   text-align: center;
   display: flex;
-  align-content: space-around;
+  justify-content: space-evenly;
 }
 #forecastData {
   text-align: center;

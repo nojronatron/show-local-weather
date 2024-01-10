@@ -5,11 +5,8 @@ form.addEventListener('submit', submitEventHandler, false);
 
 // originating code from MDN with edits
 function positionSuccess(position) {
-  // since geolocation is available the event listener is no longer necessary
-  // form.removeEventListener('submit', submitEventHandler, false);
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
-  // Do something with your latitude and longitude
   sendData(latitude, longitude);
 }
 
@@ -20,15 +17,12 @@ function positionError() {
 // acquire geolocation (if available)
 // originating code from MDN with edits
 if ('geolocation' in navigator) {
-  console.log('geolocation is available');
   navigator.geolocation.getCurrentPosition(positionSuccess, positionError);
 } else {
-  console.log('geolocation IS NOT available');
   console.log('GeoLocation not available, user will have to submit the form.');
 }
 
 function submitEventHandler(event) {
-  console.log('Take over form submission');
   event.preventDefault();
   const latitude = event.target.lat.value;
   const longitude = event.target.lon.value;
@@ -60,8 +54,6 @@ async function sendData(lat, lon) {
 
 // *** update the page with results from fetch *** //
 function displayResults(wxDataResponse) {
-  console.log('displayResults() wxDataResponse: ', wxDataResponse);
-
   // set up a header for the weather data
   let cityWx = document.getElementById('cityWx');
   let wxImg = document.getElementById('wxImg');
@@ -74,24 +66,25 @@ function displayResults(wxDataResponse) {
   // city name
   let cityNameEl = document.createElement('h2');
   cityNameEl.textContent = `${wxDataResponse.name} Weather`;
+
   if (cityWx.hasChildNodes()) {
     cityWx.removeChild(cityWx.firstChild);
   }
+
   cityWx.appendChild(cityNameEl);
 
   //  forecast image
-  // e.g. https://cdn.freecodecamp.org/weather-icons/02n.png
   let iconUrl = wxDataResponse.weather[0].icon;
   let wxIcon = document.createElement('img');
   wxIcon.src = iconUrl;
   wxIcon.width = '60';
   wxIcon.alt = "Dynamically loaded image of today's weather.";
+
   if (wxImg.hasChildNodes()) {
     wxImg.removeChild(wxImg.firstChild);
   }
-  wxImg.appendChild(wxIcon);
 
-  // weather[0].main, weather[0].description mainDesc
+  wxImg.appendChild(wxIcon);
   let mainDescText = `Current Conditions: ${wxDataResponse.weather[0].description}.`;
   mainDesc.textContent = mainDescText;
 
@@ -157,14 +150,4 @@ function displayResults(wxDataResponse) {
     WindSpdDegGust.removeChild(WindSpdDegGust.firstChild);
   }
   WindSpdDegGust.appendChild(windsEl);
-
-  // sys.sunrise, sys.sunset "sunRiseSet" => not epoch-like so skipping
-  // let sunrise = `Sunrise: ${wxDataResponse.sys.sunrise}`;
-  // let sunriseEl = document.createElement('p');
-  // sunriseEl.textContent = sunrise;
-  // let sunset = `Sunset: ${wxDataResponse.sys.sunset}`;
-  // let sunsetEl = document.createElement('p');
-  // sunsetEl.textContent = sunset;
-  // sunRiseSet.appendChild(sunriseEl);
-  // sunRiseSet.appendChild(sunsetEl);
 }

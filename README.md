@@ -1,5 +1,7 @@
 # Show Local Weather
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7273d3eb-f71a-45a8-ba91-c37660c4f61b/deploy-status)](https://app.netlify.com/sites/subtle-kulfi-b91017/deploys)
+
 ## Objective
 
 Build an app that is functionally similar to [this codepen example](https://codepen.io/freeCodeCamp/full/bELRjV).
